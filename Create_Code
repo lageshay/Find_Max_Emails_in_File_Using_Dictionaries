@@ -1,0 +1,34 @@
+#Prompt the user for the file name
+name = input("Enter file:")
+#If the user does not add a name (<1 character in length) use file "mbox-short.txt"
+if len(name) < 1 : name = "mbox-short.txt"
+#Open the file 
+handle = open(name)
+
+#Create a list
+lists = list()
+# Iterate through the file, finding lines beginning with ‘From’ and skipping lines that begin with ‘From:’. Split the words in the line and add the second word to the list.
+for line in handle:
+    if not line.startswith('From'): continue
+    if line.startswith('From:'): continue
+    words = line.split()
+    lists.append(words[1])
+
+#Create a dictionary 
+counts = dict()
+#Iterate through the list above. Get the counts for each word- Using ‘word’ as the key, add one to the value of the ‘word’ each iteration that word appears, otherwise, start with a default 0 for the ‘word’
+for word in lists:
+    counts[word] = counts.get(word,0) + 1
+
+#Create ‘biggestcount’ to find largest count in dictionary and ‘biggestword’ for the key/’word’ for that count  
+biggestcount = None
+biggestword = None
+# Iterate through the key-value pairs in the dictionary and count the number of times each word appears
+for word,count in counts.items():
+    #The first time a word’s count is >0 (None) or the count is bigger than the current ‘biggestcount,’ replace biggestcount with the new count and the biggestword with the corresponding word (key)
+    if biggestcount is None or count > biggestcount:
+        biggestword = word
+        biggestcount = count
+
+#Print the largest word and it’s corresponding number of counts
+print(biggestword, biggestcount)
